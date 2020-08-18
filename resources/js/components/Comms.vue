@@ -1,25 +1,49 @@
 <template>
-<div class="comms">
+    <div class="comms">
 
-    <div class="comms-list">
-        <div class="comm" v-for="comm in comms" :key ="comm.id">{{comm}}</div>
+        <div class="comms-list">
+            <div class="comm" v-for="comm in comms" :key="comm.id">
+                <div>
+                    <div><img src="img/1.jpg" alt="photo de profile" class="pdp"></div>
+                    <div class="user-name">
+                        {{comm.user}}
+                        <span>{{comm.date}}</span>
+                    </div>
+                </div>
+                <p>{{comm.content}}</p>
+            </div>
+        </div>
+
+        <form action="" class="comms-form" @submit.prevent="addComm">
+            <input type="text" placeholder="Laisser votre commentaire" class="comm-input" v-model="comm">
+            {{comm}}
+        </form>
+
     </div>
-
-    <form action="" class="comms-form" @submit.prevent="addComm">
-        <input type="text" placeholder="Laisser votre commentaire" v-model="comm" >
-    </form>
-
-</div>
 
 </template>
 
 <script>
     export default {
 
-        data (){
+        data() {
             return {
-                comm:"",
-                comms : ['1er comm','2eme comm','3eme comm']
+                comm: "",
+                comms: [{
+                    user: "Maxime Amini",
+                    date: "il y'a 2heures",
+                    content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi ipsa architecto in voluptatem, quo repellat ea atque praesentium laudantium, odio, qui distinctio assumenda? Autem tempore in illo sed nihil corporis!'
+                }]
+            }
+        },
+        methods: {
+            addComm (){
+                this.comms.push({
+                    user: "Maxime Amini",
+                    date: "il y'a 2heures",
+                    content: this.comm}
+                    )
+                    this.comm=""
             }
         }
 
@@ -28,5 +52,49 @@
 </script>
 
 <style scoped>
+    .comms {
+        width: 50%;
+        color: #495057;
+    }
+
+    .comm div {
+        display: flex;
+        align-items: center;
+    }
+
+    .comm .pdp {
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+    }
+
+    .comm .user-name {
+        font-weight: bold;
+
+        margin-left: 10px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .comm .user-name span {
+        font-weight: normal;
+        font-size: 12px;
+        color: #9e9fb4;
+    }
+
+    .comms .comms-form .comm-input {
+        border: none;
+        width: 100%;
+        border-top: 1px solid #dbdce7;
+        height: calc(1.5em + 0.75rem + 2px);
+        padding-left: 1rem;
+    }
+
+    .comms .comms-form .comm-input:focus {
+        color: #495057;
+        border: none;
+        border-top: 1px solid #dbdce7;
+        outline: 0;
+    }
 
 </style>

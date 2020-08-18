@@ -1931,27 +1931,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      comm: "",
-      comms: [{
+      comm: {
         user: "Maxime Amini",
-        date: "il y'a 2heures",
-        content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi ipsa architecto in voluptatem, quo repellat ea atque praesentium laudantium, odio, qui distinctio assumenda? Autem tempore in illo sed nihil corporis!'
-      }]
+        content: this.comm
+      },
+      comms: this.dataComm
     };
   },
+  props: ['dataComm'],
   methods: {
     addComm: function addComm() {
-      this.comms.push({
-        user: "Maxime Amini",
-        date: "il y'a 2heures",
-        content: this.comm
+      var _this = this;
+
+      axios.post('/comms', this.comm).then(function (result) {
+        _this.comms.push(result.data);
+
+        _this.comm = "";
       });
-      this.comm = "";
     }
   }
 });
@@ -38190,7 +38189,7 @@ var render = function() {
       "div",
       { staticClass: "comms-list" },
       _vm._l(_vm.comms, function(comm) {
-        return _c("div", { key: comm.id, staticClass: "comm" }, [
+        return _c("div", { key: comm, staticClass: "comm" }, [
           _c("div", [
             _vm._m(0, true),
             _vm._v(" "),
@@ -38200,7 +38199,7 @@ var render = function() {
                   _vm._s(comm.user) +
                   "\n                    "
               ),
-              _c("span", [_vm._v(_vm._s(comm.date))])
+              _c("span", [_vm._v(_vm._s(comm.created_at))])
             ])
           ]),
           _vm._v(" "),
@@ -38228,23 +38227,22 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.comm,
-              expression: "comm"
+              value: _vm.comm.content,
+              expression: "comm.content"
             }
           ],
           staticClass: "comm-input",
           attrs: { type: "text", placeholder: "Laisser votre commentaire" },
-          domProps: { value: _vm.comm },
+          domProps: { value: _vm.comm.content },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.comm = $event.target.value
+              _vm.$set(_vm.comm, "content", $event.target.value)
             }
           }
-        }),
-        _vm._v("\n        " + _vm._s(_vm.comm) + "\n    ")
+        })
       ]
     )
   ])

@@ -1,13 +1,12 @@
 <template>
     <div class="comms">
-
         <div class="comms-list">
-            <div class="comm" v-for="comm in comms" :key="comm.id">
+            <div class="comm" v-for="comm in comms" :key="comm">
                 <div>
                     <div><img src="img/1.jpg" alt="photo de profile" class="pdp"></div>
                     <div class="user-name">
                         {{comm.user}}
-                        <span>{{comm.date}}</span>
+                        <span>{{comm.created_at}}</span>
                     </div>
                 </div>
                 <p>{{comm.content}}</p>
@@ -15,8 +14,7 @@
         </div>
 
         <form action="" class="comms-form" @submit.prevent="addComm">
-            <input type="text" placeholder="Laisser votre commentaire" class="comm-input" v-model="comm">
-            {{comm}}
+            <input type="text" placeholder="Laisser votre commentaire" class="comm-input" v-model="comm.content">
         </form>
 
     </div>
@@ -28,22 +26,17 @@
 
         data() {
             return {
-                comm: "",
-                comms: [{
-                    user: "Maxime Amini",
-                    date: "il y'a 2heures",
-                    content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi ipsa architecto in voluptatem, quo repellat ea atque praesentium laudantium, odio, qui distinctio assumenda? Autem tempore in illo sed nihil corporis!'
-                }]
+                comm: { user: "Maxime Amini", content: this.comm},
+                comms: this.dataComm
             }
         },
+        props: ['dataComm'],
         methods: {
-            addComm (){
-                this.comms.push({
-                    user: "Maxime Amini",
-                    date: "il y'a 2heures",
-                    content: this.comm}
-                    )
-                    this.comm=""
+            addComm() {
+                axios.post('/comms', this.comm).then((result) => {
+                    this.comms.push(result.data)
+                    this.comm = ""
+                })
             }
         }
 

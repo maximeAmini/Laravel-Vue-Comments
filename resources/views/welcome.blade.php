@@ -7,7 +7,7 @@
     </head>
     <body>
         <div id="app">
-            <comms></comms>
+            <comms :data-comm="{{$comms}}"></comms>
         </div>
 
         <script src="./js/app.js"></script>
